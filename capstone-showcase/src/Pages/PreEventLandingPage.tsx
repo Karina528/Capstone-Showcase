@@ -34,9 +34,9 @@ const PreEventLandingPage: React.FC = () => {
     navigate("/admin");
   };
 
-  // const handleSurveyFormClick = () => {
-  //   navigate("/survey");
-  // };
+  const handleSponsorLoginClick = () => {
+    navigate("/sponsor");
+  };
 
   return (
     <>
@@ -51,6 +51,18 @@ const PreEventLandingPage: React.FC = () => {
           <img src={asuLogo} alt="ASU Logo" className="asu-logo" />
         </header>
         <main className="content-area" aria-label="Main Event Content">
+         
+          <div className="button-container">
+            <button
+              className="sponsor-login-button"
+              onClick={handleSponsorLoginClick}
+              aria-label="Sponsor Login Button"
+            >
+              Sponsor Login
+            </button>
+
+          </div>
+         
           <div className="button-container">
             <button
               className="admin-login-button"

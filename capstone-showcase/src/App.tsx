@@ -19,6 +19,7 @@ import AdminDashboard from "./Pages/AdminDashboard";
 import EditPresentation from "./Pages/EditPresentation";
 import EditSubmissions from "./Pages/EditSubmissions";
 import ContactSupport from "./Pages/ContactSupport";
+import SponsorLogin from "./Pages/SponsorLogin";
 
 const App: React.FC = () => {
   return (
@@ -59,7 +60,7 @@ const App: React.FC = () => {
             <Route path="admin-dashboard/edit/presentation" element={<EditPresentation />} />
             <Route path="admin-dashboard/edit/submissions" element={<EditSubmissions />} />
 
-
+            <Route path="/sponsor" element={<SponsorLogin />} />
             <Route path="admin-dashboard/support" element={<ContactSupport />} />
           </Routes>
         </div>
