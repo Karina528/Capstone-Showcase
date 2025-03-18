@@ -54,7 +54,7 @@ const PreEventLandingPage: React.FC = () => {
          
           <div className="button-container">
             <button
-              className="sponsor-login-button"
+              className="admin-login-button"
               onClick={handleSponsorLoginClick}
               aria-label="Sponsor Login Button"
             >
