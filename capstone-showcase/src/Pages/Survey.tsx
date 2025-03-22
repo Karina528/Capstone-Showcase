@@ -4,8 +4,8 @@ import axios from "axios";
 import "../CSS/Survey.css";
 
 interface FormData {
-  email: string;
   name: string;
+  email: string;
   projectTitle: string;
   projectDescription: string;
   sponsor: string;
@@ -19,8 +19,8 @@ interface FormData {
 }
 
 interface FormErrors {
-  email: string;
   name: string;
+  email: string;
   projectTitle: string;
   projectDescription: string;
   sponsor: string;
@@ -35,8 +35,8 @@ interface FormErrors {
 
 const Survey: React.FC = () => {
   const initialFormData: FormData = {
-    email: "",
     name: "",
+    email: "",
     projectTitle: "",
     projectDescription: "",
     sponsor: "",
@@ -50,8 +50,8 @@ const Survey: React.FC = () => {
   };
 
   const initialFormErrors: FormErrors = {
-    email: "",
     name: "",
+    email: "",
     projectTitle: "",
     projectDescription: "",
     sponsor: "",
@@ -112,8 +112,8 @@ const Survey: React.FC = () => {
 
   const validateFormData = (formData: FormData) => {
     const {
-      email,
       name,
+      email,
       projectTitle,
       projectDescription,
       sponsor,
