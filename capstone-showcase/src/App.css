@@ -5,16 +5,6 @@
   text-align: center;
 }
 
-.content {
-  margin-top: 60px;
-  transition: margin-left 0.3s ease;
-}
-
-.side-menu .content {
-  margin-left: 250px;
-  transition: margin-left 0.3s ease;
-}
-
 .logo {
   height: 6em;
   padding: 1.5em;
