@@ -1,13 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../Pages/AuthContext";
 import "../CSS/SponsorLogin.css";
 import asuLogoPlain from "../assets/asuLogoPlain.png";
+//import { SponsorsPageComponent } from "./SponsorsPopup"; 
 
 const SponsorLogin: React.FC = () => {
-  const [username, setUsername] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { login } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   useEffect(() => {
     document.body.classList.add("sponsor-login-page-body");
@@ -16,14 +15,13 @@ const SponsorLogin: React.FC = () => {
     };
   }, []);
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    if (username === " ") {
-      login("Sponsor");
-      navigate("/");
-    } else {
-      alert("Invalid credentials");
-    }
+  const handleLoginClick = () => {
+    login("Sponsor");
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -31,20 +29,18 @@ const SponsorLogin: React.FC = () => {
       <div className="box">
         <img src={asuLogoPlain} alt="ASU Logo" className="logo" />
         <h2 className="sponsor-login-title">Sponsor Login</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Phone Number"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            className="input"
-          />
-          <button type="submit" className="button">
-            Send my One-Time Password
-          </button>
-        </form>
+        <button type="button" className="button" onClick={handleLoginClick}>
+          Open Sponsor Portal
+        </button>
       </div>
+
+      {isModalOpen && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-modal" onClick={closeModal}>X</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

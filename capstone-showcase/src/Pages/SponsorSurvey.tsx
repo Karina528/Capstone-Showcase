@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../CSS/SponsorSurvey.css";
+import "../CSS/Survey.css"; 
+import "../CSS/SponsorSurvey.css"; 
+import Footer from "../Pages/Footer";  
 
 interface FormData {
-  email: string;
   name: string;
+  email: string;
   projectTitle: string;
   projectDescription: string;
   sponsor: string;
@@ -19,8 +21,8 @@ interface FormData {
 }
 
 interface FormErrors {
-  email: string;
   name: string;
+  email: string;
   projectTitle: string;
   projectDescription: string;
   sponsor: string;
@@ -35,8 +37,8 @@ interface FormErrors {
 
 const SponsorSurvey: React.FC = () => {
   const initialFormData: FormData = {
-    email: "",
     name: "",
+    email: "",
     projectTitle: "",
     projectDescription: "",
     sponsor: "",
@@ -50,8 +52,8 @@ const SponsorSurvey: React.FC = () => {
   };
 
   const initialFormErrors: FormErrors = {
-    email: "",
     name: "",
+    email: "",
     projectTitle: "",
     projectDescription: "",
     sponsor: "",
@@ -69,7 +71,7 @@ const SponsorSurvey: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const navigate = useNavigate();
-  
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -79,41 +81,16 @@ const SponsorSurvey: React.FC = () => {
     setFormData({ ...formData, [name]: value });
 
     if (name === "demo" && value === "no") {
-      setFormData((prevFormData) => ({ ...prevFormData, power: "" }));
+      setFormData((prev) => ({ ...prev, power: "" }));
     }
 
     setErrors({ ...errors, [name]: "" });
-    console.log(`Field: ${name}, Value: ${value}`);
   };
 
-    
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const formErrors = validateFormData(formData);
-    setErrors(formErrors);
-
-    if (hasErrors(formErrors)) {
-      scrollToFirstError();
-      return;
-    }
-
-    const submissionData = prepareSubmissionData(formData);
-
-    axios
-    .post("https://asucapstone.com:3000/api/sponsorsurvey", submissionData)
-    //.post("http://localhost:3000/api/sponsorsurvey", submissionData)
-      .then(() => {
-        handleSuccessfulSubmission();
-      })
-      .catch((error: { message: string }) => {
-        console.error("Error submitting survey data:", error);
-      });
-  };
-
-  const validateFormData = (formData: FormData) => {
+  const validateFormData = (formData: FormData): FormErrors => {
     const {
-      email,
       name,
+      email,
       projectTitle,
       projectDescription,
       sponsor,
@@ -122,7 +99,6 @@ const SponsorSurvey: React.FC = () => {
       major,
       demo,
       nda,
-      // youtubeLink,
     } = formData;
 
     const errors: FormErrors = {
@@ -140,9 +116,7 @@ const SponsorSurvey: React.FC = () => {
         ? "Please enter the full names of all team members, including yourself, separated by commas."
         : "",
       major: !major ? "Please select a course number." : "",
-      demo: !demo
-        ? "Please specify if your group will be bringing a demo."
-        : "",
+      demo: !demo ? "Please specify if your group will be bringing a demo." : "",
       power: "",
       nda: !nda ? "Please specify if your group signed an NDA or IP." : "",
       youtubeLink: "",
@@ -153,8 +127,7 @@ const SponsorSurvey: React.FC = () => {
     }
 
     if (demo === "yes" && !formData.power) {
-      errors.power =
-        "Please specify if your group will need power for your demo.";
+      errors.power = "Please specify if your group will need power for your demo.";
     }
 
     return errors;
@@ -165,9 +138,9 @@ const SponsorSurvey: React.FC = () => {
   };
 
   const scrollToFirstError = () => {
-    const firstErrorElement = document.querySelector(".error-message");
-    if (firstErrorElement) {
-      firstErrorElement.scrollIntoView({ behavior: "smooth" });
+    const firstError = document.querySelector(".error-message");
+    if (firstError) {
+      firstError.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -179,275 +152,122 @@ const SponsorSurvey: React.FC = () => {
     return submissionData;
   };
 
-  const handleSuccessfulSubmission = () => {
-    setFormData(initialFormData);
-    setIsSubmitted(true);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const formErrors = validateFormData(formData);
+    setErrors(formErrors);
 
-    setTimeout(() => {
-      setIsSubmitted(false);
-      navigate("/");
-    }, 3000); 
+    if (hasErrors(formErrors)) {
+      scrollToFirstError();
+      return;
+    }
+
+    const submissionData = prepareSubmissionData(formData);
+
+    axios
+      .post("https://asucapstone.com:3000/api/survey", submissionData)
+      .then(() => {
+        setFormData(initialFormData);
+        setIsSubmitted(true);
+        setTimeout(() => {
+          setIsSubmitted(false);
+          navigate("/");
+        }, 3000);
+      })
+      .catch((error: { message: string }) => {
+        console.error("Error submitting survey data:", error);
+      });
   };
 
-  const handleCloseSuccessMessage = () => {
-    setIsSubmitted(false); 
-    navigate("/"); 
-  };
- 
   return (
-    <div className="form-container">
-      {isSubmitted && (
-        <div className="success-message">
-          <p>Thank you for submitting your survey! Your responses have been recorded successfully.</p>
-          <button onClick={handleCloseSuccessMessage} className="ok-button">OK</button>
-        </div>
-      )}
-      <form onSubmit={handleSubmit}>
-        <div className="form-header">
-          <h1 className="form-title">Capstone Showcase Information Form</h1>
-          <p className="form-description">
-            Read all questions and descriptions carefully. If you encounter
-            issues with this form that prohibit you from submitting accurate
-            information, email{" "}
-            <a href="mailto:showcasewebsite@asu.edu">
-              {" "}
-              showcasewebsite@asu.edu{" "}
-            </a>
-            with a detailed description of the problem.
+    <div className="sponsor-survey-container">
+      <div className="card">
+        <div className="card-header">
+          <h1 className="card-title">Sponsor Proposal Form</h1>
+          <p className="card-description">
+            Please fill out the form below to submit your capstone project proposal.
           </p>
         </div>
-        <div className="form-box">
-          <label htmlFor="name">Your Name:</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          {errors.name && <p className="error-message">{errors.name}</p>}
-        </div>
-        <div className="form-box">
-          <label htmlFor="email">ASU Email:</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          {errors.email && <p className="error-message">{errors.email}</p>}
-        </div>
-        <div className="form-box">
-          <label htmlFor="projectTitle">Project Title:</label>
-          <select
-            name="projectTitle"
-            id="projectTitle"
-            value={formData.projectTitle}
-            onChange={handleChange}
-          >
-            <option value="">Select a project</option>
-            <option value="CS/E-001 - ABC Academy of Music - ABC Academy of Music • Custom Business Management Software">
-              CS/E-001 - ABC Academy of Music - ABC Academy of Music • Custom
-              Business Management Software
-            </option>
-          </select>
-          {errors.projectTitle && (
-            <p className="error-message">{errors.projectTitle}</p>
-          )}
-        </div>
-        <div className="form-box">
-          <label htmlFor="projectDescription">
-            Project Description (3 sentences max):
-          </label>
-          <textarea
-            name="projectDescription"
-            id="projectDescription"
-            value={formData.projectDescription}
-            onChange={handleChange}
-          />
-          {errors.projectDescription && (
-            <p className="error-message">{errors.projectDescription}</p>
-          )}
-        </div>
-        <div className="form-box">
-          <label htmlFor="sponsor">Sponsor/Mentor:</label>
-          <input
-            type="text"
-            name="sponsor"
-            id="sponsor"
-            value={formData.sponsor}
-            onChange={handleChange}
-          />
-          {errors.sponsor && <p className="error-message">{errors.sponsor}</p>}
-        </div>
-        <div className="form-box">
-          <label htmlFor="numberOfTeamMembers">Number of Team Members:</label>
-          <input
-            type="number"
-            name="numberOfTeamMembers"
-            id="numberOfTeamMembers"
-            value={formData.numberOfTeamMembers}
-            onChange={handleChange}
-          />
-          {errors.numberOfTeamMembers && (
-            <p className="error-message">{errors.numberOfTeamMembers}</p>
-          )}
-        </div>
-        <div className="form-box">
-          <label htmlFor="teamMemberNames">Team Members' Full Names:</label>
-          <textarea
-            name="teamMemberNames"
-            id="teamMemberNames"
-            value={formData.teamMemberNames}
-            onChange={handleChange}
-          />
-          {errors.teamMemberNames && (
-            <p className="error-message">{errors.teamMemberNames}</p>
-          )}
-        </div>
-        <div className="form-box">
-          <label htmlFor="major">Major:</label>
-          <select
-            name="major"
-            id="major"
-            value={formData.major}
-            onChange={handleChange}
-          >
-            <option value="">Select a major</option>
-            <option value="computer-science">Computer Science</option>
-            <option value="computer-systems-engineering">
-              Computer Systems Engineering
-            </option>
-            <option value="biomedical-engineering">
-              Biomedical Engineering
-            </option>
-            <option value="mechanical-engineering">
-              Mechanical Engineering
-            </option>
-            <option value="electrical-engineering">
-              Electrical Engineering
-            </option>
-            <option value="industrial-engineering">
-              Industrial Engineering
-            </option>
-            <option value="informatics">Informatics</option>
-            <option value="interdisciplinary">Interdisciplinary</option>
-          </select>
-          <small>
-            * Note: Select Interdisciplinary if your team members are in
-            different majors
-          </small>
-          {errors.major && (
-            <p className="error-message">{errors.major}</p>
-          )}
-        </div>
-        <div className="form-box">
-          <label>
-            Will your group be bringing a demo in addition to your poster?
-          </label>
-          <div className="radio-group">
-            <label>
-              <input
-                type="radio"
-                name="demo"
-                value="yes"
-                checked={formData.demo === "yes"}
-                onChange={handleChange}
-              />{" "}
-              Yes
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="demo"
-                value="no"
-                checked={formData.demo === "no"}
-                onChange={handleChange}
-              />{" "}
-              No
-            </label>
-          </div>
-          {errors.demo && <p className="error-message">{errors.demo}</p>}
-        </div>
-        {formData.demo === "yes" && (
-          <div className="form-box">
-            <label>If so, will your group need power for your demo?</label>
-            <div className="radio-group">
-              <label>
-                <input
-                  type="radio"
-                  name="power"
-                  value="yes"
-                  checked={formData.power === "yes"}
-                  onChange={handleChange}
-                />{" "}
-                Yes
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="power"
-                  value="no"
-                  checked={formData.power === "no"}
-                  onChange={handleChange}
-                />{" "}
-                No
-              </label>
+        <div className="card-content">
+          {isSubmitted && (
+            <div className="success-message">
+              <p>
+                Thank you for submitting your survey! Your response has been
+                recorded successfully.
+              </p>
+              <button onClick={() => navigate("/")} className="ok-button">
+                OK
+              </button>
             </div>
-          </div>
-        )}
-        <div className="form-box">
-          <label>Did your group sign an NDA or IP?</label>
-          <div className="radio-group">
-            <label>
+          )}
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="form-box">
+              <label htmlFor="name">Your Name:</label>
               <input
-                type="radio"
-                name="nda"
-                value="yes"
-                checked={formData.nda === "yes"}
+                type="text"
+                name="name"
+                id="name"
+                value={formData.name}
                 onChange={handleChange}
-              />{" "}
-              Yes
-            </label>
-            <label>
+              />
+              {errors.name && <p className="error-message">{errors.name}</p>}
+            </div>
+            <div className="form-box">
+              <label htmlFor="email">ASU Email:</label>
               <input
-                type="radio"
-                name="nda"
-                value="no"
-                checked={formData.nda === "no"}
+                type="email"
+                name="email"
+                id="email"
+                value={formData.email}
                 onChange={handleChange}
-              />{" "}
-              No
-              <div>
-                {formData.nda === "no" && (
-                  <div className="form-box-youtube">
-                  <label htmlFor="youtubeLink">YouTube Video Link:</label>
-                  <input
-                    type="url"
-                    name="youtubeLink"
-                    id="youtubeLink"
-                    value={formData.youtubeLink}
-                    onChange={handleChange}
-                  />
-                  {errors.youtubeLink && (
-                    <p className="error-message">{errors.youtubeLink}</p>
-                  )}
-                  </div>
+              />
+              {errors.email && <p className="error-message">{errors.email}</p>}
+            </div>
+            <div className="form-box">
+              <label htmlFor="projectTitle">Project Title:</label>
+              <input
+                type="text"
+                name="projectTitle"
+                id="projectTitle"
+                value={formData.projectTitle}
+                onChange={handleChange}
+              />
+              {errors.projectTitle && (
+                <p className="error-message">{errors.projectTitle}</p>
               )}
-              </div>
-              
-            </label>
-            {errors.nda && <p className="error-message">{errors.nda}</p>}
-          </div>
+            </div>
+            <div className="form-box">
+              <label htmlFor="projectDescription">Project Description:</label>
+              <textarea
+                name="projectDescription"
+                id="projectDescription"
+                value={formData.projectDescription}
+                onChange={handleChange}
+              />
+              {errors.projectDescription && (
+                <p className="error-message">{errors.projectDescription}</p>
+              )}
+            </div>
+            <div className="form-box">
+              <label htmlFor="sponsor">Sponsor/Mentor:</label>
+              <input
+                type="text"
+                name="sponsor"
+                id="sponsor"
+                value={formData.sponsor}
+                onChange={handleChange}
+              />
+              {errors.sponsor && <p className="error-message">{errors.sponsor}</p>}
+            </div>
+            <div className="form-box">
+              <button type="submit" className="submit-button">
+                Submit Proposal
+              </button>
+            </div>
+          </form>
         </div>
-        <div className="form-box">
-          <button type="submit" className="submit-button">
-            Submit
-          </button>
-        </div>
-
-      </form>
+      </div>
+      <Footer />
     </div>
   );
 };

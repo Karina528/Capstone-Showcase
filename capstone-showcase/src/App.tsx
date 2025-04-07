@@ -20,6 +20,7 @@ import EditPresentation from "./Pages/EditPresentation";
 import EditSubmissions from "./Pages/EditSubmissions";
 import ContactSupport from "./Pages/ContactSupport";
 import SponsorLogin from "./Pages/SponsorLogin";
+import SponsorSurvey from "./Pages/SponsorSurvey";
 
 const App: React.FC = () => {
   return (
@@ -62,6 +63,7 @@ const App: React.FC = () => {
 
             <Route path="/sponsor" element={<SponsorLogin />} />
             <Route path="admin-dashboard/support" element={<ContactSupport />} />
+            <Route path="/sponsor-survey" element={<SponsorSurvey />} />
           </Routes>
         </div>
       </Router>
