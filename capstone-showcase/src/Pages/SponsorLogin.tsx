@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../Pages/AuthContext";
 import "../CSS/SponsorLogin.css";
 import asuLogoPlain from "../assets/asuLogoPlain.png";
-//import { SponsorsPageComponent } from "./SponsorsPopup"; 
+import SponsorsPopup from "./SponsorsPopup"; 
 
 const SponsorLogin: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,6 +38,7 @@ const SponsorLogin: React.FC = () => {
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="close-modal" onClick={closeModal}>X</button>
+            <SponsorsPopup />
           </div>
         </div>
       )}

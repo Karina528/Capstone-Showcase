@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../CSS/Survey.css"; 
@@ -70,7 +70,20 @@ const SponsorSurvey: React.FC = () => {
   const [errors, setErrors] = useState<FormErrors>(initialFormErrors);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const [proposals, setProposals] = useState<FormData[]>([]);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get("https://asucapstone.com:3000/api/survey/sponsorsurvey")
+      .then((response) => {
+        setProposals(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching proposals:", error);
+      });
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -267,6 +280,24 @@ const SponsorSurvey: React.FC = () => {
           </form>
         </div>
       </div>
+
+      <div className="proposals-list">
+        <h2>Submitted Proposals</h2>
+        {proposals.length === 0 ? (
+          <p>No proposals available at this time.</p>
+        ) : (
+          proposals.map((proposal, idx) => (
+            <div key={idx} className="proposal-card">
+              <h3>{proposal.projectTitle}</h3>
+              <p>{proposal.projectDescription}</p>
+              <p>
+                <strong>Sponsor:</strong> {proposal.sponsor}
+              </p>
+            </div>
+          ))
+        )}
+      </div>
+
       <Footer />
     </div>
   );
