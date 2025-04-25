@@ -20,7 +20,7 @@ const Footer: React.FC = () => {
                       <li><a href="https://www.asu.edu/">Arizona State University</a></li>
                       <li><a href="http://localhost:5173/survey">Showcase Proposal</a></li>
                       <li><a href="http://localhost:5173/projectproposal">Student Project Proposal</a></li>
-                      <li><a href="http://localhost:5173/sponsorsurvey">Sponsor Proposal</a></li>
+                      <li><a href="http://localhost:5173/sponsor-survey">Sponsor Proposal</a></li>
                     </ul>
                     </td>
                      

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Use react-router-dom's Link instead of Next.js Link
+import { Link } from "react-router-dom"; 
 import Footer from "../Pages/Footer"; 
 
 const SimpleHeader: React.FC = () => (

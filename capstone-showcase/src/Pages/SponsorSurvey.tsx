@@ -76,7 +76,8 @@ const SponsorSurvey: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("https://asucapstone.com:3000/api/survey/sponsorsurvey")
+      //.get("https://asucapstone.com:3000/api/survey/sponsorsurvey")
+      .get("http://localhost:3000/api/survey/")
       .then((response) => {
         setProposals(response.data);
       })
@@ -178,7 +179,8 @@ const SponsorSurvey: React.FC = () => {
     const submissionData = prepareSubmissionData(formData);
 
     axios
-      .post("https://asucapstone.com:3000/api/survey", submissionData)
+      //.post("https://asucapstone.com:3000/api/survey", submissionData)
+      .post("http://localhost:3000/api/survey/", submissionData)
       .then(() => {
         setFormData(initialFormData);
         setIsSubmitted(true);
